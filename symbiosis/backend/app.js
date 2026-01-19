@@ -17,7 +17,10 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all origins for simplicity in deployment
+    credentials: true
+}));
 
 // Static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
