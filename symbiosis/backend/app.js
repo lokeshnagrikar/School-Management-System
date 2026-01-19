@@ -17,10 +17,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors({
-    origin: '*', // Allow all origins for simplicity in deployment
-    credentials: true
-}));
+app.use(cors()); // Allow all origins by default
 
 // Static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
