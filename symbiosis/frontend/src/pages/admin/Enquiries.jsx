@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const Enquiries = () => {
     const [enquiries, setEnquiries] = useState([]);
@@ -32,7 +33,7 @@ const Enquiries = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <LoadingSpinner fullScreen={false} />;
 
     return (
         <div className="space-y-6">
@@ -73,8 +74,8 @@ const Enquiries = () => {
                                             value={enquiry.status}
                                             onChange={(e) => handleStatusChange(enquiry._id, e.target.value)}
                                             className={`text-xs font-semibold rounded-full px-3 py-1 border-0 focus:ring-2 focus:ring-blue-500 cursor-pointer ${enquiry.status === 'New' ? 'bg-blue-100 text-blue-800' :
-                                                    enquiry.status === 'Contacted' ? 'bg-yellow-100 text-yellow-800' :
-                                                        'bg-green-100 text-green-800'
+                                                enquiry.status === 'Contacted' ? 'bg-yellow-100 text-yellow-800' :
+                                                    'bg-green-100 text-green-800'
                                                 }`}
                                         >
                                             <option value="New">New</option>

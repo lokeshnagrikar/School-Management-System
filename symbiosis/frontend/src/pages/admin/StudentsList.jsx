@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { FiPlus, FiTrash2, FiEdit2, FiSearch, FiUser, FiInfo } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const StudentsList = () => {
     const [students, setStudents] = useState([]);
@@ -111,7 +112,7 @@ const StudentsList = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <LoadingSpinner fullScreen={false} />;
 
     return (
         <div className="space-y-6">

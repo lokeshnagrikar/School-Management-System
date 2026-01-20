@@ -29,13 +29,42 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const loginWithGoogle = async (token) => {
+        try {
+            // Set token in localStorage temporarily to allow api interceptor to pick it up if configured, 
+            // or we manually pass header. Assuming api instance picks up token from localStorage 'userInfo'.
+            // But 'userInfo' is an object. 
+            // Better to explicitly pass header here.
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            const { data } = await api.get('/users/profile', config);
+
+            // Construct user object matching normal login response
+            const userInfo = { ...data, token };
+
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            setUser(userInfo);
+            return { success: true };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.response?.data?.message || 'Google Login failed',
+            };
+        }
+    };
+
     const logout = () => {
         localStorage.removeItem('userInfo');
         setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, loginWithGoogle, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

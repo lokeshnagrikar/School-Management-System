@@ -52,8 +52,8 @@ This guide will walk you through deploying your MERN stack application for free 
     *   **Framework Preset**: Vite (should be auto-detected).
 5.  **Environment Variables**:
     *   **Name**: `VITE_API_URL`
-    *   **Value**: (Paste your Render Backend URL + `/api`)
-    *   *Example Value*: `https://isbm-backend.onrender.com/api`
+    *   **Value**: `https://school-backend-7ygw.onrender.com/api`
+    *   *Example Value*: `https://school-backend-7ygw.onrender.com/api`
 6.  Click **Deploy**.
 
 ---

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { motion } from 'framer-motion';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const PublicGallery = () => {
     const [images, setImages] = useState([]);
@@ -23,7 +24,7 @@ const PublicGallery = () => {
         fetchGallery();
     }, []);
 
-    if (loading) return <div className="min-h-screen pt-20 flex justify-center items-center">Loading...</div>;
+    if (loading) return <LoadingSpinner />;
 
     return (
         <div className="min-h-screen pt-20 pb-12 bg-gray-50">

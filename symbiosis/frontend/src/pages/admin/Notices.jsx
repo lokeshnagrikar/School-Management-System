@@ -3,6 +3,7 @@ import AuthContext from '../../context/AuthContext';
 import api from '../../services/api';
 import { FiPlus, FiCalendar, FiTrash2, FiClock, FiTag } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const Notices = () => {
     const { user } = useContext(AuthContext); // Get user for RBAC
@@ -61,7 +62,7 @@ const Notices = () => {
     // Pseudo-Masonry Grid Logic (simple alternate columns for now, or just grid)
     // Using standard grid with flex heights.
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <LoadingSpinner fullScreen={false} />;
 
     const canEdit = user?.role === 'ADMIN' || user?.role === 'TEACHER';
 

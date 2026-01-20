@@ -3,6 +3,8 @@ const cors = require('cors');
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./config/swagger');
+const passport = require('passport');
+require('./config/passport');
 
 const userRoutes = require('./routes/authRoutes');
 const academicRoutes = require('./routes/academicRoutes');
@@ -17,6 +19,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(passport.initialize());
 app.use(cors()); // Allow all origins by default
 
 // Static folder for uploads

@@ -114,4 +114,47 @@ router.post('/profile/image', protect, (req, res, next) => {
 router.get('/activity', protect, getRecentActivity);
 router.put('/password', protect, changeUserPassword);
 
+const passport = require('passport');
+const generateToken = require('../utils/generateToken');
+
+// @desc    Auth with Google
+// @route   GET /api/users/google
+// @access  Public
+/**
+ * @swagger
+ * /api/users/google:
+ *   get:
+ *     summary: Initiate Google OAuth login
+ *     tags: [Auth]
+ *     responses:
+ *       302:
+ *         description: Redirects to Google Login
+ */
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
+
+// @desc    Google auth callback
+// @route   GET /api/users/google/callback
+// @access  Public
+/**
+ * @swagger
+ * /api/users/google/callback:
+ *   get:
+ *     summary: Google OAuth callback
+ *     tags: [Auth]
+ *     responses:
+ *       302:
+ *         description: Redirects to Frontend with token
+ *       401:
+ *         description: Authentication failed
+ */
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { failureRedirect: `${process.env.FRONTEND_URL}/login?error=true`, session: false }),
+  (req, res) => {
+    // Successful authentication, redirect home.
+    const token = generateToken(req.user._id);
+    res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
+  }
+);
+
 module.exports = router;

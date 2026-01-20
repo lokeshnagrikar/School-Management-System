@@ -2,12 +2,16 @@ import { useContext, useState, useRef, useEffect } from 'react';
 import AuthContext from '../../context/AuthContext';
 import api from '../../services/api';
 import { FiUser, FiMail, FiShield, FiCheckCircle, FiCamera, FiUpload } from 'react-icons/fi';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const Profile = () => {
     const { user } = useContext(AuthContext);
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef(null);
     const [activities, setActivities] = useState([]);
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordLoading, setPasswordLoading] = useState(false);
 
     useEffect(() => {
         const fetchActivityLogs = async () => {
@@ -25,13 +29,34 @@ const Profile = () => {
     }, [user]);
 
 
+    const handlePasswordChange = async (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        setPasswordLoading(true);
+        try {
+            await api.put('/users/profile', { password });
+            alert("Password updated successfully");
+            setPassword('');
+            setConfirmPassword('');
+        } catch (error) {
+            console.error('Password Update Error:', error);
+            const message = error.response?.data?.message || 'Failed to update password';
+            alert(`Error: ${message}`);
+        } finally {
+            setPasswordLoading(false);
+        }
+    };
+
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
         const formData = new FormData();
         formData.append('image', file);
-
         setUploading(true);
 
         try {
@@ -60,7 +85,7 @@ const Profile = () => {
         }
     };
 
-    if (!user) return <div>Loading...</div>;
+    if (!user) return <LoadingSpinner fullScreen={false} />;
 
     return (
         <div className="max-w-4xl mx-auto">
@@ -146,6 +171,39 @@ const Profile = () => {
                                     <span>Full Access</span>
                                 </li>
                             </ul>
+
+                            <div className="mt-8 pt-6 border-t border-gray-200">
+                                <h3 className="text-lg font-bold text-gray-800 mb-4">Security Settings</h3>
+                                <form onSubmit={handlePasswordChange} className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                                        <input
+                                            type="password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                            placeholder="Set new password"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                                        <input
+                                            type="password"
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                            placeholder="Confirm new password"
+                                        />
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        disabled={!password || passwordLoading}
+                                        className="w-full bg-white border border-gray-300 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                                    >
+                                        {passwordLoading ? 'Updating...' : 'Update Password'}
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
 

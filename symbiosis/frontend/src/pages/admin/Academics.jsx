@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const Academics = () => {
     const [classes, setClasses] = useState([]);
@@ -69,7 +70,7 @@ const Academics = () => {
         }
     }
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <LoadingSpinner fullScreen={false} />;
 
     return (
         <div className="space-y-8">

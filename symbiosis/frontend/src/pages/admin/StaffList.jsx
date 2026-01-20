@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { FiPlus, FiTrash2, FiEdit2, FiMail, FiBriefcase, FiPhone, FiCheck } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const StaffList = () => {
     const [staff, setStaff] = useState([]);
@@ -85,7 +86,7 @@ const StaffList = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <LoadingSpinner fullScreen={false} />;
 
     return (
         <div className="space-y-8">
