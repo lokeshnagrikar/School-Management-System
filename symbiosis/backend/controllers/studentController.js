@@ -1,136 +1,55 @@
-const asyncHandler = require('express-async-handler');
 const Student = require('../models/Student');
+const Timetable = require('../models/Timetable');
+const Class = require('../models/Class');
 const User = require('../models/User');
+const asyncHandler = require('express-async-handler');
 
 // @desc    Get all students
 // @route   GET /api/students
-// @access  Private/Admin/Teacher
-const getStudents = asyncHandler(async (req, res) => {
-  const pageSize = 10;
-  const page = Number(req.query.pageNumber) || 1;
-
-  const keyword = req.query.keyword
-    ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: 'i',
-        },
-      }
-    : {};
-
-  const count = await Student.countDocuments({ ...keyword });
-  const students = await Student.find({ ...keyword })
-    .populate('class', 'name')
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
-
-  res.json({ students, page, pages: Math.ceil(count / pageSize) });
+// @access  Private/Admin
+const getAllStudents = asyncHandler(async (req, res) => {
+  const students = await Student.find().populate('class', 'name');
+  res.json(students);
 });
 
-// @desc    Get student by ID
-// @route   GET /api/students/:id
-// @access  Private
-const getStudentById = asyncHandler(async (req, res) => {
-  const student = await Student.findById(req.params.id)
-    .populate('class', 'name')
-    .populate('user', 'email');
-
-  if (student) {
-    res.json(student);
-  } else {
-    res.status(404);
-    throw new Error('Student not found');
-  }
-});
-
-// @desc    Create a student profile
+// @desc    Create a student
 // @route   POST /api/students
 // @access  Private/Admin
 const createStudent = asyncHandler(async (req, res) => {
-  const {
-    name,
-    admissionNumber,
-    classId,
-    section,
-    parentName,
-    phone,
-    email,
-    profileImage,
-    status
-  } = req.body;
+  const { name, email, admissionNumber, class: classId, section, parentName, phone, password } = req.body;
 
-  // Ideally, we should also check if a User exists for this student, or create one potentially.
-  // For now, let's assume the user ID is passed or handled separately.
-  // Requirement says: Admin creates student.
-  // Should we auto-create a user account? Yes, usually.
-  
-  // Check if admission number exists
-  const studentExists = await Student.findOne({ admissionNumber });
-  if (studentExists) {
-    res.status(400);
-    throw new Error('Student with this admission number already exists');
-  }
-
-  // Auto-create User account for the student?
-  // Let's create a User first. 
-  // Password default: 123456 (should be changed) or generated.
-  
+  // 1. Check if user already exists
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
     throw new Error('User with this email already exists');
   }
 
+  // 2. Create User first
   const user = await User.create({
     name,
     email,
-    password: 'password123', // Default password
+    password, 
     role: 'STUDENT',
   });
 
-  try {
-      const student = await Student.create({
-        user: user._id,
-        name,
-        admissionNumber,
-        class: classId,
-        section,
-        parentName,
-        phone,
-        email,
-        profileImage,
-        status,
-      });
+  if (user) {
+    // 3. Create Student Profile
+    const student = await Student.create({
+      user: user._id,
+      name,
+      email,
+      admissionNumber,
+      class: classId,
+      section,
+      parentName,
+      phone,
+    });
 
-      res.status(201).json(student);
-  } catch (error) {
-      // Rollback user creation if student creation fails
-      await User.findByIdAndDelete(user._id);
-      res.status(400);
-      throw new Error('Invalid student data: ' + error.message);
-  }
-});
-
-// @desc    Update student
-// @route   PUT /api/students/:id
-// @access  Private/Admin
-const updateStudent = asyncHandler(async (req, res) => {
-  const student = await Student.findById(req.params.id);
-
-  if (student) {
-    student.name = req.body.name || student.name;
-    student.class = req.body.classId || student.class;
-    student.section = req.body.section || student.section;
-    student.parentName = req.body.parentName || student.parentName;
-    student.phone = req.body.phone || student.phone;
-    student.status = req.body.status || student.status;
-    student.profileImage = req.body.profileImage || student.profileImage;
-
-    const updatedStudent = await student.save();
-    res.json(updatedStudent);
+    res.status(201).json(student);
   } else {
-    res.status(404);
-    throw new Error('Student not found');
+    res.status(400);
+    throw new Error('Invalid user data');
   }
 });
 
@@ -141,7 +60,7 @@ const deleteStudent = asyncHandler(async (req, res) => {
   const student = await Student.findById(req.params.id);
 
   if (student) {
-    // Optionally delete the associated user
+    // Delete associated User account
     await User.findByIdAndDelete(student.user);
     await student.deleteOne();
     res.json({ message: 'Student removed' });
@@ -151,10 +70,71 @@ const deleteStudent = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get Student Dashboard Data
+// @route   GET /api/students/dashboard
+// @access  Private (Student)
+const getDashboardData = async (req, res) => {
+  try {
+    // 1. Find the Student record linked to the logged-in User
+    const student = await Student.findOne({ user: req.user._id });
+
+    if (!student) {
+      // Handle case for auto-registered Google users who haven't been assigned a class yet
+      return res.status(200).json({
+        message: 'Student profile incomplete',
+        classTeacher: null,
+        schedule: [],
+        attendancePercent: 0, 
+        assignmentsPending: 0
+      });
+    }
+
+    // 2. Get Class Info (including Class Teacher)
+    let classTeacher = null;
+    if (student.class) {
+        const classInfo = await Class.findById(student.class).populate('classTeacher', 'name email photoPath');
+        if (classInfo && classInfo.classTeacher) {
+            classTeacher = classInfo.classTeacher;
+        }
+    }
+
+    // 3. Get Today's Timetable
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const today = days[new Date().getDay()];
+    
+    let todaysSchedule = [];
+    if (student.class && student.section) {
+        const timetable = await Timetable.findOne({ 
+            class: student.class, 
+            section: student.section, 
+            day: today 
+        })
+        .populate('periods.subject', 'name')
+        .populate('periods.teacher', 'name');
+
+        if (timetable) {
+            todaysSchedule = timetable.periods;
+        }
+    }
+
+    res.json({
+        classTeacher,
+        schedule: todaysSchedule,
+        // Dummies for now (could be real later)
+        attendancePercent: 92,
+        assignmentsPending: 4,
+        upcomingEvents: 2
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 module.exports = {
-  getStudents,
-  getStudentById,
+  getAllStudents,
   createStudent,
-  updateStudent,
   deleteStudent,
+  getDashboardData,
 };

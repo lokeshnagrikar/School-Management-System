@@ -12,6 +12,11 @@ const classSchema = mongoose.Schema(
         type: String, // e.g., "A", "B"
       },
     ],
+    classTeacher: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Staff', // or 'User' if Staff model isn't always linked
+      required: false,
+    },
     // Optional: Link to subjects taught in this class
     subjects: [
       {

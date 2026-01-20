@@ -130,7 +130,7 @@ const generateToken = require('../utils/generateToken');
  *       302:
  *         description: Redirects to Google Login
  */
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false, prompt: 'select_account' }));
 
 // @desc    Google auth callback
 // @route   GET /api/users/google/callback

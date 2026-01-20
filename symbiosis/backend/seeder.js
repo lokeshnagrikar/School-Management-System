@@ -38,11 +38,17 @@ const importData = async () => {
         { name: 'Science', code: 'SCI101', description: 'General Science' },
     ]);
 
-    const grade1 = await Class.create({
-        name: 'Grade 1',
-        sections: ['A', 'B'],
-        subjects: subjects.map(s => s._id),
-    });
+    // Create Classes Grade 1 to 10
+    const classesToCreate = [];
+    for (let i = 1; i <= 10; i++) {
+        classesToCreate.push({
+            name: `Grade ${i}`,
+            sections: ['A', 'B', 'C'],
+            subjects: subjects.map(s => s._id),
+        });
+    }
+    
+    await Class.insertMany(classesToCreate);
 
     console.log('Data Imported!');
     process.exit();

@@ -39,6 +39,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      profileImage: user.profileImage, // Added this
     });
   } else {
     res.status(401);
@@ -75,6 +76,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      profileImage: user.profileImage,
     });
   } else {
     res.status(400);
@@ -94,6 +96,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      profileImage: user.profileImage, 
     });
   } else {
     res.status(404);

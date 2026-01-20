@@ -43,7 +43,10 @@ const Sidebar = () => {
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold">IS</span>
                     </div>
-                    <span className="text-white text-xl font-bold tracking-tight">Admin<span className="text-blue-500">Panel</span></span>
+                    <span className="text-white text-xl font-bold tracking-tight">
+                        {user?.role === 'STUDENT' ? 'Student' : user?.role === 'TEACHER' ? 'Teacher' : 'Admin'}
+                        <span className="text-blue-500">Panel</span>
+                    </span>
                 </div>
             </div>
 

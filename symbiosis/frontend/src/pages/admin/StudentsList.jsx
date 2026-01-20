@@ -33,11 +33,12 @@ const StudentsList = () => {
                 api.get('/students'),
                 api.get('/academic/classes')
             ]);
-            setStudents(studentsRes.data.students || studentsRes.data); // Handle potential pagination wrapper
+
+            setStudents(studentsRes.data.students || studentsRes.data);
             setClasses(classesRes.data);
             setLoading(false);
         } catch (err) {
-            console.error(err);
+            console.error('Error fetching data:', err);
             setLoading(false);
         }
     };
@@ -112,6 +113,9 @@ const StudentsList = () => {
         }
     };
 
+    const { user } = api.getState ? api.getState() : { user: JSON.parse(localStorage.getItem('userInfo')) }; // Helper to get user role
+    const isAdmin = user?.role === 'ADMIN';
+
     if (loading) return <LoadingSpinner fullScreen={false} />;
 
     return (
@@ -132,9 +136,11 @@ const StudentsList = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <button onClick={handleOpenAdd} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm transition-all hover:scale-105">
-                        <FiPlus /> Add Student
-                    </button>
+                    {isAdmin && (
+                        <button onClick={handleOpenAdd} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm transition-all hover:scale-105">
+                            <FiPlus /> Add Student
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -187,14 +193,16 @@ const StudentsList = () => {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="flex justify-center gap-2">
-                                                <button onClick={() => handleOpenEdit(student)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
-                                                    <FiEdit2 />
-                                                </button>
-                                                <button onClick={() => handleDelete(student._id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
-                                                    <FiTrash2 />
-                                                </button>
-                                            </div>
+                                            {isAdmin && (
+                                                <div className="flex justify-center gap-2">
+                                                    <button onClick={() => handleOpenEdit(student)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
+                                                        <FiEdit2 />
+                                                    </button>
+                                                    <button onClick={() => handleDelete(student._id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                                                        <FiTrash2 />
+                                                    </button>
+                                                </div>
+                                            )}
                                         </td>
                                     </motion.tr>
                                 ))}
