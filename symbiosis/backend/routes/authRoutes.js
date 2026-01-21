@@ -165,7 +165,6 @@ router.get(
     // Successful authentication, redirect home.
     const token = generateToken(req.user._id);
     res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
-    res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
   }
 );
 

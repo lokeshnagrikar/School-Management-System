@@ -25,18 +25,30 @@ const Login = () => {
         const token = params.get("token");
         const errorParam = params.get("error");
 
+        console.log("Login Page params - Token:", token ? "Present" : "Missing", "Error:", errorParam);
+
         if (errorParam) {
             setError("Google Login failed. Please try again or use email/password.");
         }
 
         if (token) {
             const handleGoogleLogin = async () => {
+                console.log("Initiating Google Login with token...");
                 setLoading(true);
-                const result = await loginWithGoogle(token);
-                if (result.success) {
-                    navigate("/dashboard");
-                } else {
-                    setError(result.message || "Google Login failed");
+                try {
+                    const result = await loginWithGoogle(token);
+                    console.log("Google Login Result:", result);
+                    if (result.success) {
+                        console.log("Login success, navigating to dashboard");
+                        navigate("/dashboard");
+                    } else {
+                        console.error("Login failed:", result.message);
+                        setError(result.message || "Google Login failed");
+                        setLoading(false);
+                    }
+                } catch (err) {
+                    console.error("Google Login Exception:", err);
+                    setError("An unexpected error occurred");
                     setLoading(false);
                 }
             };
@@ -160,7 +172,7 @@ const Login = () => {
                     </div>
 
                     <a
-                        href={`${import.meta.env.VITE_API_URL.replace('/api', '')}/api/users/google`}
+                        href={`${(import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace('/api', '')}/api/users/google`}
                         className="w-full flex items-center justify-center px-4 py-4 border border-white/20 bg-white/10 hover:bg-white/20 text-base font-medium rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg transition-all"
                     >
                         <FcGoogle className="mr-2 text-2xl" />
