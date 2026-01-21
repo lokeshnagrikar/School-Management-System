@@ -20,6 +20,15 @@ const { protect } = require('../middleware/authMiddleware');
  *   description: Authentication management
  */
 
+router.get('/debug-config', (req, res) => {
+  res.json({
+    backendUrl: process.env.BACKEND_URL,
+    frontendUrl: process.env.FRONTEND_URL,
+    callbackUrl: `${process.env.BACKEND_URL}/api/users/google/callback`,
+    googleClientId: process.env.GOOGLE_CLIENT_ID ? 'Set' : 'Not Set'
+  });
+});
+
 /**
  * @swagger
  * /api/users/login:
