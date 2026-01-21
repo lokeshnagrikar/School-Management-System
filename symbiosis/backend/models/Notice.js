@@ -22,6 +22,11 @@ const noticeSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
+    targetClass: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Class',
+      default: null, // null means public
+    },
   },
   {
     timestamps: true,

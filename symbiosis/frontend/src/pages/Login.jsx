@@ -60,15 +60,15 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gray-900">
+        <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gray-900 dark:bg-black transition-colors duration-500">
             {/* Background Image & Overlay */}
             <div className="absolute inset-0 z-0">
                 <img
                     src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
                     alt="School Building"
-                    className="w-full h-full object-cover opacity-50"
+                    className="w-full h-full object-cover opacity-40 dark:opacity-20"
                 />
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-purple-900/80 backdrop-blur-sm"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-purple-900/80 dark:from-black/80 dark:to-slate-900/90 backdrop-blur-sm"></div>
             </div>
 
             {/* Login Card */}
@@ -76,7 +76,7 @@ const Login = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="relative z-10 w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl mx-4"
+                className="relative z-10 w-full max-w-md bg-white/10 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 p-8 rounded-3xl shadow-2xl mx-4"
             >
                 <div className="text-center mb-8">
                     <div className="mx-auto w-16 h-16 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mb-4 shadow-lg">
@@ -137,7 +137,7 @@ const Login = () => {
                             <label htmlFor="remember-me" className="ml-2 block text-blue-200">Remember me</label>
                         </div>
                         <div className="text-sm">
-                            <a href="#" className="font-medium text-blue-300 hover:text-white transition-colors">Forgot password?</a>
+                            <Link to="/forgot-password" className="font-medium text-blue-300 hover:text-white transition-colors">Forgot password?</Link>
                         </div>
                     </div>
 

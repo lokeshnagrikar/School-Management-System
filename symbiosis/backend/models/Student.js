@@ -18,19 +18,19 @@ const studentSchema = mongoose.Schema(
     class: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Class',
-      required: true,
+      required: false, // Changed to false for initial Google Auth
     },
     section: {
       type: String,
-      required: true,
+      required: false, // Changed to false for initial Google Auth
     },
     parentName: {
       type: String,
-      required: true,
+      required: false, // Changed to false for Google Auth
     },
     phone: {
       type: String,
-      required: true,
+      required: false, // Changed to false for Google Auth
     },
     email: { // Optional contact email different from login
       type: String,

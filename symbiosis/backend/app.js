@@ -13,6 +13,7 @@ const staffRoutes = require('./routes/staffRoutes');
 const cmsRoutes = require('./routes/cmsRoutes');
 const enquiryRoutes = require('./routes/enquiryRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const assignmentRoutes = require('./routes/assignmentRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
@@ -36,7 +37,16 @@ app.use('/api/staff', staffRoutes);
 app.use('/api/cms', cmsRoutes);
 app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/teacher', require('./routes/teacherRoutes'));
+app.use('/api/attendance', require('./routes/attendanceRoutes'));
+app.use('/api/marks', require('./routes/markRoutes'));
+app.use('/api/timetable', require('./routes/timetableRoutes'));
 app.use('/api/settings', require('./routes/settingsRoutes'));
+app.use('/api/assignments', assignmentRoutes);
+app.use('/api/events', require('./routes/eventRoutes'));
+app.use('/api/newsletter', require('./routes/newsletterRoutes'));
+app.use('/api/search', require('./routes/searchRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 
 // Static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

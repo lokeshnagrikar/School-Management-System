@@ -25,13 +25,13 @@ const steps = [
 
 const Admissions = () => {
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-28 pb-14 px-4">
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-950 pt-28 pb-14 px-4 transition-colors duration-300">
             <div className="max-w-5xl mx-auto">
                 {/* Page Title */}
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-14 font-serif"
+                    className="text-4xl md:text-5xl font-bold text-center text-gray-900 dark:text-white mb-14 font-serif transition-colors"
                 >
                     Admissions
                 </motion.h1>
@@ -46,22 +46,22 @@ const Admissions = () => {
                             transition={{ delay: index * 0.15 }}
                             viewport={{ once: true }}
                             whileHover={{ y: -8 }}
-                            className="bg-white rounded-2xl shadow-lg p-8 text-center group"
+                            className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8 text-center group border border-gray-100 dark:border-slate-700 transition-all"
                         >
                             <motion.div
                                 whileHover={{ rotate: 8, scale: 1.1 }}
-                                className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 text-blue-600 shadow-inner"
+                                className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 shadow-inner"
                             >
                                 <item.icon size={30} />
                             </motion.div>
 
-                            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide">
+                            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
                                 {item.step}
                             </span>
-                            <h3 className="mt-2 text-xl font-bold text-gray-900">
+                            <h3 className="mt-2 text-xl font-bold text-gray-900 dark:text-white transition-colors">
                                 {item.title}
                             </h3>
-                            <p className="mt-3 text-gray-600 leading-relaxed">
+                            <p className="mt-3 text-gray-600 dark:text-gray-400 leading-relaxed transition-colors">
                                 {item.desc}
                             </p>
                         </motion.div>
@@ -72,16 +72,16 @@ const Admissions = () => {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center gap-4 bg-blue-50 border border-blue-200 rounded-xl p-6 mb-14"
+                    className="flex items-center gap-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6 mb-14"
                 >
                     <motion.div
                         animate={{ scale: [1, 1.1, 1] }}
                         transition={{ repeat: Infinity, duration: 2 }}
-                        className="text-blue-600"
+                        className="text-blue-600 dark:text-blue-400"
                     >
                         <FiInfo size={28} />
                     </motion.div>
-                    <p className="text-blue-800 font-medium">
+                    <p className="text-blue-800 dark:text-blue-200 font-medium">
                         Admissions open for <strong>Academic Year 2026–2027</strong> from
                         Nursery to Grade 10.
                     </p>
@@ -93,12 +93,12 @@ const Admissions = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center"
                 >
-                    <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900 dark:text-white transition-colors">
                         Interested in Admission?
                     </h2>
                     <Link
                         to="/contact"
-                        className="inline-flex items-center px-8 py-4 rounded-full text-white font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-xl hover:shadow-blue-500/40 transition"
+                        className="inline-flex items-center px-8 py-4 rounded-full text-white font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-xl hover:shadow-blue-500/40 transition-all hover:scale-105"
                     >
                         Contact Us for Enquiry
                     </Link>

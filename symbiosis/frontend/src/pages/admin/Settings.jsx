@@ -91,7 +91,7 @@ const Settings = () => {
             className={`flex items-center gap-2 px-6 py-3 font-medium rounded-lg transition-all
       ${activeTab === id
                     ? 'bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700'
                 }`}
         >
             <Icon /> {label}
@@ -100,7 +100,7 @@ const Settings = () => {
 
     return (
         <div className="max-w-5xl mx-auto py-12 px-4">
-            <h1 className="text-4xl font-bold text-gray-800 mb-10
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-10
                      bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500
                      bg-clip-text text-transparent animate-pulse">
                 Settings
@@ -119,7 +119,7 @@ const Settings = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
+                className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-slate-700 transition-colors"
             >
 
                 {/* Global Message */}
@@ -128,7 +128,7 @@ const Settings = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className={`p-4 rounded-lg mb-6 flex items-center gap-2
-              ${message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
+              ${message.type === 'success' ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}
                     >
                         {message.type === 'success' ? <FiCheck /> : <FiSettings />}
                         {message.text}
@@ -138,19 +138,19 @@ const Settings = () => {
                 {/* Security Tab */}
                 {activeTab === 'security' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-                        <h2 className="text-xl font-bold text-gray-800 mb-2">Change Password</h2>
-                        <p className="text-gray-500 mb-6">Use a strong password for your account.</p>
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Change Password</h2>
+                        <p className="text-gray-500 dark:text-gray-400 mb-6">Use a strong password for your account.</p>
                         <form onSubmit={handlePasswordChange} className="space-y-4 max-w-md">
                             {['currentPassword', 'newPassword', 'confirmPassword'].map((field, i) => (
                                 <div key={i}>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         {field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                                     </label>
                                     <input
                                         type="password"
-                                        className="w-full rounded-lg border border-gray-300 px-3 py-2
+                                        className="w-full rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white px-3 py-2
                                focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                               transition-all"
+                               transition-colors outline-none"
                                         value={passwordData[field]}
                                         onChange={(e) => setPasswordData({ ...passwordData, [field]: e.target.value })}
                                         required
@@ -160,7 +160,7 @@ const Settings = () => {
                             ))}
                             <button type="submit" disabled={loading}
                                 className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
-                           text-white rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2">
+                           text-white rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2 shadow-lg">
                                 {loading ? 'Saving...' : <><FiSave /> Update Password</>}
                             </button>
                         </form>
@@ -170,18 +170,18 @@ const Settings = () => {
                 {/* Preferences Tab */}
                 {activeTab === 'preferences' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-                        <h2 className="text-xl font-bold text-gray-800 mb-2">Preferences</h2>
-                        <p className="text-gray-500 mb-6">Customize your dashboard.</p>
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Preferences</h2>
+                        <p className="text-gray-500 dark:text-gray-400 mb-6">Customize your dashboard.</p>
                         <form onSubmit={handlePreferenceUpdate} className="space-y-6 max-w-md">
 
-                            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                            <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg hover:shadow-md transition-all border border-gray-100 dark:border-slate-600">
                                 <div className="flex items-center gap-3">
-                                    <div className="bg-blue-100 p-2 rounded-full text-blue-600 animate-pulse">
+                                    <div className="bg-blue-100 dark:bg-blue-900/40 p-2 rounded-full text-blue-600 dark:text-blue-400 animate-pulse">
                                         <FiBell />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium text-gray-900">Email Notifications</h3>
-                                        <p className="text-sm text-gray-500">Receive updates via email.</p>
+                                        <h3 className="font-medium text-gray-900 dark:text-white">Email Notifications</h3>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Receive updates via email.</p>
                                     </div>
                                 </div>
                                 <label className="relative inline-flex items-center cursor-pointer">
@@ -191,7 +191,7 @@ const Settings = () => {
                                         checked={preferences.notifications}
                                         onChange={(e) => setPreferences({ ...preferences, notifications: e.target.checked })}
                                     />
-                                    <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600
+                                    <div className="w-11 h-6 bg-gray-200 dark:bg-slate-600 rounded-full peer-checked:bg-blue-600
                                   after:content-[''] after:absolute after:top-[2px] after:left-[2px]
                                   after:bg-white after:border-gray-300 after:border after:rounded-full
                                   after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
@@ -200,7 +200,7 @@ const Settings = () => {
 
                             <button type="submit" disabled={loading}
                                 className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
-                           text-white rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2">
+                           text-white rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2 shadow-lg">
                                 {loading ? 'Saving...' : <><FiSave /> Save Preferences</>}
                             </button>
                         </form>
@@ -210,8 +210,8 @@ const Settings = () => {
                 {/* System Config Tab (Admin) */}
                 {activeTab === 'system' && user.role === 'ADMIN' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-                        <h2 className="text-xl font-bold text-gray-800 mb-2">System Configuration</h2>
-                        <p className="text-gray-500 mb-6">Manage global app settings.</p>
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">System Configuration</h2>
+                        <p className="text-gray-500 dark:text-gray-400 mb-6">Manage global app settings.</p>
                         <form onSubmit={handleSystemUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                             {[
@@ -220,10 +220,10 @@ const Settings = () => {
                                 { label: 'Contact Phone', key: 'contactPhone', type: 'text' },
                             ].map((field) => (
                                 <div key={field.key}>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">{field.label}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{field.label}</label>
                                     <input
                                         type={field.type}
-                                        className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                                        className="w-full rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
                                         value={systemConfig[field.key]}
                                         onChange={(e) => setSystemConfig({ ...systemConfig, [field.key]: e.target.value })}
                                     />
@@ -231,19 +231,19 @@ const Settings = () => {
                             ))}
 
                             <div className="col-span-2">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
                                 <textarea
                                     rows="2"
-                                    className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                                    className="w-full rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
                                     value={systemConfig.address}
                                     onChange={(e) => setSystemConfig({ ...systemConfig, address: e.target.value })}
                                 />
                             </div>
 
-                            <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg col-span-2 border border-red-100 hover:shadow-md transition-shadow">
+                            <div className="flex items-center justify-between p-4 bg-red-50 dark:bg-red-900/20 rounded-lg col-span-2 border border-red-100 dark:border-red-900/30 hover:shadow-md transition-all">
                                 <div>
-                                    <h3 className="font-bold text-red-800">Maintenance Mode</h3>
-                                    <p className="text-sm text-red-600">Restrict non-admin access</p>
+                                    <h3 className="font-bold text-red-800 dark:text-red-300">Maintenance Mode</h3>
+                                    <p className="text-sm text-red-600 dark:text-red-400">Restrict non-admin access</p>
                                 </div>
                                 <label className="relative inline-flex items-center cursor-pointer">
                                     <input
@@ -252,7 +252,7 @@ const Settings = () => {
                                         checked={systemConfig.maintenanceMode}
                                         onChange={(e) => setSystemConfig({ ...systemConfig, maintenanceMode: e.target.checked })}
                                     />
-                                    <div className="w-11 h-6 bg-gray-200 rounded-full
+                                    <div className="w-11 h-6 bg-gray-200 dark:bg-slate-600 rounded-full
                                   peer-checked:bg-red-600
                                   after:content-[''] after:absolute after:top-[2px] after:left-[2px]
                                   after:bg-white after:border-gray-300 after:border after:rounded-full
@@ -263,7 +263,7 @@ const Settings = () => {
                             <div className="col-span-2">
                                 <button type="submit" disabled={loading}
                                     className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
-                             text-white rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2">
+                             text-white rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2 shadow-lg">
                                     {loading ? 'Saving...' : <><FiSave /> Update System Config</>}
                                 </button>
                             </div>

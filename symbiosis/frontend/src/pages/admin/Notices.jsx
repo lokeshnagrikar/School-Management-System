@@ -59,19 +59,16 @@ const Notices = () => {
         }
     }
 
-    // Pseudo-Masonry Grid Logic (simple alternate columns for now, or just grid)
-    // Using standard grid with flex heights.
-
     if (loading) return <LoadingSpinner fullScreen={false} />;
 
     const canEdit = user?.role === 'ADMIN' || user?.role === 'TEACHER';
 
     return (
         <div className="space-y-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 transition-colors">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Notice Board</h1>
-                    <p className="text-gray-500 mt-1">Keep the school updated with latest news</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Notice Board</h1>
+                    <p className="text-gray-500 dark:text-gray-400 mt-1">Keep the school updated with latest news</p>
                 </div>
                 {canEdit && (
                     <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-purple-500/20 transition-all hover:scale-105">
@@ -91,7 +88,7 @@ const Notices = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.5 }}
                             transition={{ duration: 0.3 }}
-                            className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow border border-gray-100 flex flex-col group relative"
+                            className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl dark:shadow-slate-900/50 transition-all border border-gray-100 dark:border-slate-700 flex flex-col group relative"
                         >
                             {/* Decorative Top Bar */}
                             <div className={`h-2 w-full ${index % 3 === 0 ? 'bg-blue-500' : index % 3 === 1 ? 'bg-purple-500' : 'bg-pink-500'
@@ -100,7 +97,7 @@ const Notices = () => {
                             {canEdit && (
                                 <button
                                     onClick={() => handleDelete(notice._id)}
-                                    className="absolute top-4 right-4 bg-white/80 backdrop-blur p-2 rounded-full text-gray-400 hover:text-red-500 shadow-sm opacity-0 group-hover:opacity-100 transition-all z-10"
+                                    className="absolute top-4 right-4 bg-white/80 dark:bg-slate-700/80 backdrop-blur p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 shadow-sm opacity-0 group-hover:opacity-100 transition-all z-10"
                                 >
                                     <FiTrash2 />
                                 </button>
@@ -108,7 +105,7 @@ const Notices = () => {
 
                             <div className="p-6 flex-1 flex flex-col">
                                 <div className="flex items-center gap-2 mb-4">
-                                    <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                                    <span className="bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1">
                                         <FiTag className="text-[10px]" /> {formData.category || 'General'}
                                     </span>
                                     <span className="text-gray-400 text-xs flex items-center gap-1">
@@ -116,18 +113,18 @@ const Notices = () => {
                                     </span>
                                 </div>
 
-                                <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors">
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                     {notice.title}
                                 </h3>
 
-                                <div className="prose prose-sm text-gray-600 mb-6 flex-1">
+                                <div className="prose prose-sm text-gray-600 dark:text-gray-400 mb-6 flex-1">
                                     <p className="line-clamp-4">{notice.content}</p>
                                 </div>
 
-                                <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                                <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-slate-700 mt-auto">
                                     <div className="flex items-center gap-2">
-                                        <div className="w-6 h-6 rounded-full bg-gray-200" title="Posted by Admin"></div>
-                                        <span className="text-xs text-gray-500 font-medium">Admin</span>
+                                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-slate-600" title="Posted by Admin"></div>
+                                        <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Admin</span>
                                     </div>
                                     <span className="text-xs text-gray-400 flex items-center gap-1">
                                         <FiClock /> Posted recently
@@ -140,9 +137,9 @@ const Notices = () => {
             </motion.div>
 
             {notices.length === 0 && (
-                <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-                    <p className="text-gray-500 text-lg">No notices published yet.</p>
-                    {canEdit && <button onClick={() => setShowModal(true)} className="text-blue-600 font-medium mt-2 hover:underline">Create your first notice</button>}
+                <div className="text-center py-20 bg-gray-50 dark:bg-slate-800/50 rounded-3xl border-2 border-dashed border-gray-200 dark:border-slate-700">
+                    <p className="text-gray-500 dark:text-gray-400 text-lg">No notices published yet.</p>
+                    {canEdit && <button onClick={() => setShowModal(true)} className="text-blue-600 dark:text-blue-400 font-medium mt-2 hover:underline">Create your first notice</button>}
                 </div>
             )}
 
@@ -158,37 +155,37 @@ const Notices = () => {
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden"
+                            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transition-colors"
                         >
-                            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                                <h3 className="text-xl font-bold text-gray-800">Compose Notice</h3>
-                                <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600">&times;</button>
+                            <div className="p-6 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center bg-gray-50 dark:bg-slate-900/50">
+                                <h3 className="text-xl font-bold text-gray-800 dark:text-white">Compose Notice</h3>
+                                <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">&times;</button>
                             </div>
 
                             <form onSubmit={handleSubmit} className="p-6 space-y-5">
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Title</label>
-                                    <input type="text" required placeholder="Enter notice title..." className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none transition-all" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} />
+                                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Title</label>
+                                    <input type="text" required placeholder="Enter notice title..." className="w-full border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none transition-all" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-                                        <select className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })}>
+                                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Category</label>
+                                        <select className="w-full border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })}>
                                             {categories.map(c => <option key={c} value={c}>{c}</option>)}
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Date</label>
-                                        <input type="date" required className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} />
+                                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Date</label>
+                                        <input type="date" required className="w-full border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} />
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Content</label>
-                                    <textarea required rows="5" placeholder="Write your announcement here..." className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none resize-none" value={formData.content} onChange={e => setFormData({ ...formData, content: e.target.value })}></textarea>
+                                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Content</label>
+                                    <textarea required rows="5" placeholder="Write your announcement here..." className="w-full border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none resize-none" value={formData.content} onChange={e => setFormData({ ...formData, content: e.target.value })}></textarea>
                                 </div>
 
                                 <div className="flex justify-end gap-3 pt-2">
-                                    <button type="button" onClick={() => setShowModal(false)} className="px-6 py-3 text-gray-600 hover:bg-gray-100 rounded-xl font-medium transition-colors">Discard</button>
+                                    <button type="button" onClick={() => setShowModal(false)} className="px-6 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl font-medium transition-colors">Discard</button>
                                     <button type="submit" className="px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 font-medium shadow-lg shadow-purple-500/30 transition-all hover:scale-105">
                                         Publish Notice
                                     </button>

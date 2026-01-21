@@ -10,9 +10,6 @@ const PublicGallery = () => {
     useEffect(() => {
         const fetchGallery = async () => {
             try {
-                // Public endpoint might not need auth if configured correctly, but our API uses standard routes.
-                // Assuming GET /cms/gallery is public or requires simple adjustment. 
-                // Currently cmsRoutes.js: router.route('/gallery').get(getGallery) -> It is NOT protected by default in previous step viewing, which is good.
                 const { data } = await api.get('/cms/gallery');
                 setImages(data);
                 setLoading(false);
@@ -27,11 +24,11 @@ const PublicGallery = () => {
     if (loading) return <LoadingSpinner />;
 
     return (
-        <div className="min-h-screen pt-20 pb-12 bg-gray-50">
+        <div className="min-h-screen pt-20 pb-12 bg-gray-50 dark:bg-slate-950 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-gray-900 font-serif mb-4">Campus Gallery</h1>
-                    <p className="text-lg text-gray-600">Glimpses of life at ISBM School</p>
+                    <h1 className="text-4xl font-bold text-gray-900 dark:text-white font-serif mb-4 transition-colors">Campus Gallery</h1>
+                    <p className="text-lg text-gray-600 dark:text-gray-400 transition-colors">Glimpses of life at ISBM School</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -41,13 +38,13 @@ const PublicGallery = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                            className="bg-white dark:bg-slate-800 rounded-xl shadow-lg dark:shadow-slate-900/50 overflow-hidden hover:shadow-xl transition-all border border-gray-100 dark:border-slate-700"
                         >
                             <div className="h-64 overflow-hidden">
                                 <img src={img.imageUrl} alt={img.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
                             </div>
                             <div className="p-4">
-                                <h3 className="text-lg font-semibold text-gray-800">{img.title}</h3>
+                                <h3 className="text-lg font-semibold text-gray-800 dark:text-white transition-colors">{img.title}</h3>
                             </div>
                         </motion.div>
                     ))}
@@ -55,7 +52,7 @@ const PublicGallery = () => {
 
                 {images.length === 0 && (
                     <div className="text-center py-20">
-                        <p className="text-gray-500">No images available in the gallery.</p>
+                        <p className="text-gray-500 dark:text-gray-400">No images available in the gallery.</p>
                     </div>
                 )}
             </div>

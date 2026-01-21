@@ -8,20 +8,9 @@ import {
     FiUsers,
 } from "react-icons/fi";
 
-const gradientAnimation = {
-    animate: {
-        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-    },
-    transition: {
-        duration: 18,
-        repeat: Infinity,
-        ease: "linear",
-    },
-};
-
 const Home = () => {
     return (
-        <div className="font-sans">
+        <div className="font-sans bg-white dark:bg-slate-950 transition-colors duration-300">
             {/* Hero Section */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
                 {/* Background Image */}
@@ -79,8 +68,6 @@ const Home = () => {
                             </span>
                         </h1>
 
-
-
                         <p className="text-xl text-gray-200 mb-10 leading-relaxed max-w-2xl">
                             We provide world-class education that nurtures academic excellence,
                             creativity, leadership, and character in a future-ready environment.
@@ -108,7 +95,7 @@ const Home = () => {
 
 
             {/* Stats Section */}
-            <section className="py-20 bg-white relative -mt-24 z-20 mx-4 md:mx-10 rounded-3xl shadow-2xl">
+            <section className="py-20 bg-white dark:bg-slate-900 relative -mt-24 z-20 mx-4 md:mx-10 rounded-3xl shadow-2xl transition-colors duration-300">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         {[
@@ -125,13 +112,13 @@ const Home = () => {
                                 viewport={{ once: true }}
                                 className="p-6"
                             >
-                                <div className="inline-flex p-4 rounded-full bg-blue-50 text-blue-600 mb-4">
+                                <div className="inline-flex p-4 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 mb-4 transition-colors">
                                     <stat.icon size={32} />
                                 </div>
-                                <h3 className="text-4xl font-bold text-gray-900 mb-2">
+                                <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">
                                     {stat.number}
                                 </h3>
-                                <p className="text-gray-500 font-medium">{stat.label}</p>
+                                <p className="text-gray-500 dark:text-gray-400 font-medium transition-colors">{stat.label}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -139,12 +126,12 @@ const Home = () => {
             </section>
 
             {/* Academic Excellence */}
-            <section className="py-24 bg-gray-50">
+            <section className="py-24 bg-gray-50 dark:bg-slate-950 transition-colors duration-300">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-16">
-                        <span className="text-blue-600 font-bold tracking-wider uppercase text-sm">Our Programs</span>
-                        <h2 className="text-4xl font-bold text-gray-900 mt-2 font-serif">Academic Excellence</h2>
-                        <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+                        <span className="text-blue-600 dark:text-blue-400 font-bold tracking-wider uppercase text-sm">Our Programs</span>
+                        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mt-2 font-serif transition-colors">Academic Excellence</h2>
+                        <p className="mt-4 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto transition-colors">
                             We offer a comprehensive curriculum designed to inspire curiosity and critical thinking at every stage of development.
                         </p>
                     </div>
@@ -158,15 +145,15 @@ const Home = () => {
                             <motion.div
                                 key={i}
                                 whileHover={{ y: -10 }}
-                                className="bg-white rounded-2xl overflow-hidden shadow-lg group cursor-pointer"
+                                className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg group cursor-pointer transition-all border border-gray-100 dark:border-slate-700"
                             >
                                 <div className="h-64 overflow-hidden">
                                     <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                 </div>
                                 <div className="p-8">
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                                    <p className="text-gray-600 mb-4">{item.desc}</p>
-                                    <Link to="/academics" className="text-blue-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+                                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">{item.title}</h3>
+                                    <p className="text-gray-600 dark:text-gray-400 mb-4 transition-colors">{item.desc}</p>
+                                    <Link to="/academics" className="text-blue-600 dark:text-blue-400 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
                                         Learn More <FiArrowRight />
                                     </Link>
                                 </div>
@@ -177,14 +164,14 @@ const Home = () => {
             </section>
 
             {/* Life at ISBM (Gallery Preview) */}
-            <section className="py-24 bg-white">
+            <section className="py-24 bg-white dark:bg-slate-900 transition-colors duration-300">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-12">
                         <div>
-                            <span className="text-purple-600 font-bold tracking-wider uppercase text-sm">Campus Life</span>
-                            <h2 className="text-4xl font-bold text-gray-900 mt-2 font-serif">Life at ISBM</h2>
+                            <span className="text-purple-600 dark:text-purple-400 font-bold tracking-wider uppercase text-sm">Campus Life</span>
+                            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mt-2 font-serif transition-colors">Life at ISBM</h2>
                         </div>
-                        <Link to="/gallery" className="hidden md:flex items-center gap-2 text-gray-600 hover:text-blue-600 font-medium transition">
+                        <Link to="/gallery" className="hidden md:flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition">
                             View Full Gallery <FiArrowRight />
                         </Link>
                     </div>
@@ -192,7 +179,7 @@ const Home = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 h-[500px]">
                         <div className="col-span-2 md:col-span-2 row-span-2 rounded-2xl overflow-hidden relative group">
                             <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Student Life" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-8 flex flex-col justify-end">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-8 flex flex-col justify-end">
                                 <h3 className="text-white text-2xl font-bold">Holistic Growth</h3>
                                 <p className="text-gray-200">Sports & Arts</p>
                             </div>
@@ -205,42 +192,47 @@ const Home = () => {
                         </div>
                         <div className="col-span-2 md:col-span-2 rounded-2xl overflow-hidden relative group">
                             <img src="https://plus.unsplash.com/premium_photo-1681505304701-34e8808fbc5a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aW5ub3ZhdGlvbiUyMGxhYiUyMHNjaG9vbHxlbnwwfHwwfHx8MA%3D%3D" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Activities" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-6 flex flex-col justify-end">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-6 flex flex-col justify-end">
                                 <h3 className="text-white text-xl font-bold">Innovation Labs</h3>
                             </div>
                         </div>
                     </div>
 
                     <div className="mt-8 text-center md:hidden">
-                        <Link to="/gallery" className="inline-flex items-center gap-2 text-blue-600 font-medium">
+                        <Link to="/gallery" className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium">
                             View Full Gallery <FiArrowRight />
                         </Link>
                     </div>
                 </div>
             </section>
 
-            {/* Newsletter / Notice Preview (Optional but good) - Keeping it clean for now, directly to CTA */}
-            <section className="py-24 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 text-center">
-                <h2 className="text-4xl font-bold text-white mb-6 font-serif">
-                    Ready to Join the ISBM Family?
-                </h2>
-                <p className="text-lg text-blue-100 mb-10 max-w-2xl mx-auto">
-                    Admissions are open for the upcoming academic session. Give your child
-                    a future built on excellence, values, and innovation.
-                </p>
-                <div className="flex justify-center gap-4 flex-col sm:flex-row">
-                    <Link
-                        to="/contact"
-                        className="px-8 py-3 bg-white text-blue-900 font-bold rounded-full hover:bg-gray-100 transition shadow-lg"
-                    >
-                        Contact Us
-                    </Link>
-                    <Link
-                        to="/admissions"
-                        className="px-8 py-3 border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition"
-                    >
-                        Admission Procedure
-                    </Link>
+            {/* Newsletter / Notice Preview */}
+            <section className="py-24 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 text-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-white opacity-5 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-pink-500 opacity-5 rounded-full blur-3xl"></div>
+
+                <div className="relative z-10">
+                    <h2 className="text-4xl font-bold text-white mb-6 font-serif px-4">
+                        Ready to Join the ISBM Family?
+                    </h2>
+                    <p className="text-lg text-blue-100 mb-10 max-w-2xl mx-auto px-4">
+                        Admissions are open for the upcoming academic session. Give your child
+                        a future built on excellence, values, and innovation.
+                    </p>
+                    <div className="flex justify-center gap-4 flex-col sm:flex-row px-4">
+                        <Link
+                            to="/contact"
+                            className="px-8 py-3 bg-white text-blue-900 font-bold rounded-full hover:bg-blue-50 transition shadow-lg transform hover:-translate-y-0.5"
+                        >
+                            Contact Us
+                        </Link>
+                        <Link
+                            to="/admissions"
+                            className="px-8 py-3 border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition transform hover:-translate-y-0.5"
+                        >
+                            Admission Procedure
+                        </Link>
+                    </div>
                 </div>
             </section>
         </div>

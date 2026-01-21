@@ -14,40 +14,55 @@ const getStaff = asyncHandler(async (req, res) => {
 // @route   POST /api/staff
 // @access  Private/Admin
 const createStaff = asyncHandler(async (req, res) => {
-  const { name, email, position, bio, photoPath, assignedSubjects } = req.body;
+  const { name, email, position, bio, photoPath, assignedSubjects, password } = req.body;
 
-  const staffExists = await Staff.findOne({ email }); // Using email as unique ID in staff possibly
+  const staffExists = await Staff.findOne({ email });
 
   if (staffExists) {
     res.status(400);
     throw new Error('Staff member already exists');
   }
 
-  // Create User account?
+  // Check if User exists
   const userExists = await User.findOne({ email });
   if (userExists) {
-      res.status(400);
-      throw new Error('User email already exists');
+    res.status(400);
+    throw new Error('User email already exists');
   }
 
+  // Determine role based on position or default to TEACHER
+  let role = 'TEACHER';
+  if (position && position.toLowerCase().includes('admin')) {
+      role = 'ADMIN';
+  } else if (position && position.toLowerCase().includes('clerk')) {
+      role = 'OFFICE'; // Assuming logic, or default to TEACHER
+  }
+
+  // Create User
   const user = await User.create({
       name,
       email,
-      password: 'password123',
-      role: 'TEACHER', // Or derive from position?
+      password: password || 'password123', // Fallback only if missing
+      role: role,
+      profileImage: photoPath
   });
 
-  const staff = await Staff.create({
-    user: user._id,
-    name,
-    email,
-    position,
-    bio,
-    photoPath,
-    assignedSubjects,
-  });
-
-  res.status(201).json(staff);
+  if (user) {
+      const staff = await Staff.create({
+        user: user._id,
+        name,
+        email,
+        position,
+        bio,
+        photoPath,
+        assignedSubjects,
+        isTeacher: role === 'TEACHER'
+      });
+      res.status(201).json(staff);
+  } else {
+      res.status(400);
+      throw new Error('Invalid user data');
+  }
 });
 
 // @desc    Delete staff
@@ -57,8 +72,16 @@ const deleteStaff = asyncHandler(async (req, res) => {
     const staff = await Staff.findById(req.params.id);
 
     if (staff) {
+        // Delete associated User if it exists
+        if (staff.user) {
+            const user = await User.findById(staff.user);
+            if (user) {
+                await user.deleteOne();
+            }
+        }
+        
         await staff.deleteOne();
-        res.json({ message: 'Staff removed' });
+        res.json({ message: 'Staff and associated User account removed' });
     } else {
         res.status(404);
         throw new Error('Staff not found');

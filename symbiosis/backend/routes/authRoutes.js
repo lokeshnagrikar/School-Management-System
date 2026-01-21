@@ -8,6 +8,8 @@ const {
   uploadUserProfileImage,
   getRecentActivity,
   changeUserPassword,
+  forgotPassword,
+  resetPassword
 } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -154,7 +156,11 @@ router.get(
     // Successful authentication, redirect home.
     const token = generateToken(req.user._id);
     res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
+    res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
   }
 );
+
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
 module.exports = router;

@@ -30,8 +30,9 @@ const importData = async () => {
       password: 'adminpassword', // Will be hashed by pre-save
       role: 'ADMIN',
     });
+    console.log('Created Admin: admin@isbm.com / adminpassword');
 
-    // Create Sample Classes
+    // Create Sample Subjects
     const subjects = await Subject.insertMany([
         { name: 'Mathematics', code: 'MATH101', description: 'Basic Math' },
         { name: 'English', code: 'ENG101', description: 'Basic English' },
@@ -48,7 +49,107 @@ const importData = async () => {
         });
     }
     
-    await Class.insertMany(classesToCreate);
+    // Insert Classes and store result to link students/staff later if needed
+    const createdClasses = await Class.insertMany(classesToCreate);
+    const grade10 = createdClasses.find(c => c.name === 'Grade 10');
+
+    // --- Create Dummy Staff (Teachers) ---
+    const staffData = [
+        { name: 'Teacher One', email: 'teacher1@school.com', position: 'Teacher', bio: 'Math Teacher' },
+        { name: 'Teacher Two', email: 'teacher2@school.com', position: 'Teacher', bio: 'English Teacher' },
+    ];
+
+
+    for (const staff of staffData) {
+        // Create User for Staff
+        const staffUser = await User.create({
+            name: staff.name,
+            email: staff.email,
+            password: 'password123',
+            role: 'TEACHER'
+        });
+
+        // Create Staff Profile
+        await Staff.create({
+            user: staffUser._id,
+            name: staff.name,
+            email: staff.email,
+            position: staff.position,
+            bio: staff.bio,
+            isTeacher: true
+        });
+        console.log(`Created Staff: ${staff.name} / password123`);
+    }
+
+    // --- Create Dummy Students (Grade 10) ---
+    if (grade10) {
+        const studentData = [
+            { name: 'Aarav Patel', email: 'aarav@student.com' },
+            { name: 'Vivaan Singh', email: 'vivaan@student.com' },
+            { name: 'Aditya Sharma', email: 'aditya@student.com' },
+            { name: 'Vihaan Gupta', email: 'vihaan@student.com' },
+            { name: 'Arjun Kumar', email: 'arjun@student.com' }
+        ];
+
+        for (let i = 0; i < studentData.length; i++) {
+            const s = studentData[i];
+            
+            // Create User for Student
+            const studentUser = await User.create({
+                name: s.name,
+                email: s.email,
+                password: 'password123',
+                role: 'STUDENT'
+            });
+
+            // Create Student Profile
+            await Student.create({
+                user: studentUser._id,
+                name: s.name,
+                email: s.email,
+                admissionNumber: `ADM10-${String(i+1).padStart(3, '0')}`,
+                class: grade10._id,
+                section: 'A',
+                phone: '1234567890',
+                parentName: 'Parent of ' + s.name
+            });
+            console.log(`Created Grade 10 Student: ${s.name}`);
+        }
+    }
+
+    // --- Create Dummy Students (Grade 1) ---
+    const grade1 = createdClasses.find(c => c.name === 'Grade 1');
+    if (grade1) {
+        const g1Students = [
+            { name: 'Ishaan Verma', email: 'ishaan@student.com' },
+            { name: 'Mira Nair', email: 'mira@student.com' },
+            { name: 'Rohan Mehra', email: 'rohan@student.com' }
+        ];
+
+        for (let i = 0; i < g1Students.length; i++) {
+            const s = g1Students[i];
+            
+             // Create User for Student
+             const studentUser = await User.create({
+                name: s.name,
+                email: s.email,
+                password: 'password123',
+                role: 'STUDENT'
+            });
+
+            await Student.create({
+                user: studentUser._id,
+                name: s.name,
+                email: s.email,
+                admissionNumber: `ADM01-${String(i+1).padStart(3, '0')}`,
+                class: grade1._id,
+                section: 'A',
+                phone: '9876543210',
+                parentName: 'Parent of ' + s.name
+            });
+            console.log(`Created Grade 1 Student: ${s.name}`);
+        }
+    }
 
     console.log('Data Imported!');
     process.exit();

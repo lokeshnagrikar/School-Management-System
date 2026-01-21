@@ -4,6 +4,8 @@ const Student = require('../models/Student');
 const Staff = require('../models/Staff');
 const Activity = require('../models/Activity');
 const generateToken = require('../utils/generateToken');
+const sendEmail = require('../utils/emailService');
+const crypto = require('crypto');
 
 // Helper to log activity
 const logActivity = async (userId, action, description, req) => {
@@ -217,4 +219,88 @@ const getRecentActivity = asyncHandler(async (req, res) => {
     res.json(logs);
 });
 
-module.exports = { authUser, registerUser, getUserProfile, updateUserProfile, uploadUserProfileImage, getRecentActivity, changeUserPassword };
+// @desc    Forgot Password - Send OTP
+// @route   POST /api/users/forgot-password
+// @access  Public
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        res.status(404);
+        throw new Error('User not found');
+    }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Hash OTP before saving (optional but recommended for security) - keeping simple for now or hash if preferred
+    // For simplicity in this demo, saving plain OTP. In prod, hash it.
+    user.resetPasswordOtp = otp;
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 Minutes
+
+    await user.save();
+
+    const message = `
+      <h1>Password Reset Request</h1>
+      <p>Your OTP for password reset is: <strong>${otp}</strong></p>
+      <p>This OTP is valid for 10 minutes.</p>
+    `;
+
+    try {
+        await sendEmail({
+            email: user.email,
+            subject: 'Password Reset OTP',
+            message,
+        });
+
+        res.status(200).json({ success: true, message: 'Email sent' });
+    } catch (error) {
+        user.resetPasswordOtp = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save();
+
+        res.status(500);
+        throw new Error('Email could not be sent');
+    }
+});
+
+// @desc    Reset Password
+// @route   POST /api/users/reset-password
+// @access  Public
+const resetPassword = asyncHandler(async (req, res) => {
+    const { email, otp, password } = req.body;
+
+    const user = await User.findOne({
+        email,
+        resetPasswordOtp: otp,
+        resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+        res.status(400);
+        throw new Error('Invalid OTP or expired');
+    }
+
+    user.password = password;
+    user.resetPasswordOtp = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+    
+    await logActivity(user._id, 'RESET_PASSWORD', 'Password reset via OTP', req);
+
+    res.status(200).json({ success: true, message: 'Password reset successful' });
+});
+
+module.exports = { 
+    authUser, 
+    registerUser, 
+    getUserProfile, 
+    updateUserProfile, 
+    uploadUserProfileImage, 
+    getRecentActivity, 
+    changeUserPassword,
+    forgotPassword,
+    resetPassword
+};
