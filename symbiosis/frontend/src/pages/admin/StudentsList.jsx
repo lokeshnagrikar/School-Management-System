@@ -34,7 +34,10 @@ const StudentsList = () => {
                 api.get('/academic/classes')
             ]);
 
-            setStudents(studentsRes.data.students || studentsRes.data);
+            console.log('API Response (Students):', studentsRes.data);
+            const fetchedStudents = studentsRes.data.students || studentsRes.data;
+            console.log('Parsed Students:', fetchedStudents);
+            setStudents(fetchedStudents);
             setClasses(classesRes.data);
             setLoading(false);
         } catch (err) {
