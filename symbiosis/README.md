@@ -1,11 +1,22 @@
 # 🏫 School Management System
 
+<<<<<<< HEAD
 A comprehensive, full-stack web application designed to streamline school administration, student management, and academic processes. Built with the MERN stack (MongoDB, Express, React, Node.js), it features secure Google Authentication, Dynamic Role-Based Dashboards, and a responsive modern UI.
 
 ![Dashboard Preview](https://via.placeholder.com/800x400?text=School+Management+System+Dashboard)
 
 ## 🚀 Features
 
+=======
+# 🏫 School Management System
+
+A comprehensive, full-stack web application designed to streamline school administration, student management, and academic processes. Built with the MERN stack (MongoDB, Express, React, Node.js), it features secure Google Authentication, Dynamic Role-Based Dashboards, and a responsive modern UI.
+
+![Dashboard Preview](https://via.placeholder.com/800x400?text=School+Management+System+Dashboard)
+
+## 🚀 Features
+
+>>>>>>> c955d1103a7e081294e7187022917fbbc98e29ac
 ### 🔐 Authentication & Security
 - **Google OAuth 2.0 Integration**: Secure one-click login for students and staff.
 - **Auto-Registration**: First-time Google users are automatically registered as Students.
