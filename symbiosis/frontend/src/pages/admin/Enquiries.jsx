@@ -13,6 +13,7 @@ const Enquiries = () => {
             setLoading(false);
         } catch (error) {
             console.error("Error", error);
+            alert('Failed to fetch queries: ' + (error.response?.data?.message || 'Server Error'));
             setLoading(false);
         }
     };

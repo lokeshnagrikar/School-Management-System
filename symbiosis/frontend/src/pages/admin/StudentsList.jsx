@@ -39,6 +39,8 @@ const StudentsList = () => {
             setLoading(false);
         } catch (err) {
             console.error('Error fetching data:', err);
+            // Alert the user if there is an error
+            alert('Failed to fetch student data: ' + (err.response?.data?.message || err.message));
             setLoading(false);
         }
     };
@@ -50,7 +52,7 @@ const StudentsList = () => {
     // Filter Logic
     const filteredStudents = students.filter(student =>
         student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        student.admissionNumber?.toLowerCase().includes(searchTerm.toLowerCase())
+        (student.admissionNumber && student.admissionNumber.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     // Handlers
@@ -124,8 +126,12 @@ const StudentsList = () => {
         }
     };
 
-    const { user } = api.getState ? api.getState() : { user: JSON.parse(localStorage.getItem('userInfo')) }; // Helper to get user role
-    const isAdmin = user?.role === 'ADMIN';
+    // Helper to get user role - fixing api.getState issue
+    const getUserRole = () => {
+        const userInfo = localStorage.getItem('userInfo');
+        return userInfo ? JSON.parse(userInfo).role : null;
+    };
+    const isAdmin = getUserRole() === 'ADMIN';
 
     if (loading) return <LoadingSpinner fullScreen={false} />;
 

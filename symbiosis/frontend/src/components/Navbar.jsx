@@ -6,6 +6,7 @@ import { FiMenu, FiX, FiLogOut, FiLayout, FiUser, FiSettings, FiChevronDown, FiS
 import ThemeToggle from "./ThemeToggle";
 import AnimatedNavIcon from "./AnimatedNavIcon";
 import { navConfig } from "../config/navConfig";
+import api from "../services/api";
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
