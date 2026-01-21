@@ -160,7 +160,7 @@ const Login = () => {
                     </div>
 
                     <a
-                        href="http://localhost:5000/api/users/google" // Assuming localhost:5000 for backend during dev. Ideally this should be from config.
+                        href={`${import.meta.env.VITE_API_URL.replace('/api', '')}/api/users/google`}
                         className="w-full flex items-center justify-center px-4 py-4 border border-white/20 bg-white/10 hover:bg-white/20 text-base font-medium rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg transition-all"
                     >
                         <FcGoogle className="mr-2 text-2xl" />
