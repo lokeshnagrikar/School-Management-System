@@ -2,14 +2,42 @@ const Student = require('../models/Student');
 const Timetable = require('../models/Timetable');
 const Class = require('../models/Class');
 const User = require('../models/User');
+const Staff = require('../models/Staff');
 const asyncHandler = require('express-async-handler');
 const sendEmail = require('../utils/emailService');
 
 // @desc    Get all students
 // @route   GET /api/students
-// @access  Private/Admin
+// @access  Private/Admin/Teacher
 const getAllStudents = asyncHandler(async (req, res) => {
-  const students = await Student.find().populate('class', 'name');
+  let query = {};
+
+  // If user is a Teacher, filter by their assigned classes
+  if (req.user.role === 'TEACHER') {
+    const staffProfile = await Staff.findOne({ user: req.user._id });
+    
+    if (staffProfile) {
+        // Collect class IDs from assignedSubjects
+        const assignedClassIds = staffProfile.assignedSubjects.map(sub => sub.class);
+        
+        // Also check if they are a classTeacher for any class
+        const classTeacherClasses = await Class.find({ classTeacher: staffProfile._id });
+        const classTeacherClassIds = classTeacherClasses.map(c => c._id);
+
+        const allClassIds = [...new Set([...assignedClassIds, ...classTeacherClassIds])];
+
+        if (allClassIds.length > 0) {
+            query.class = { $in: allClassIds };
+        } else {
+            // Teacher has no classes, return empty
+             return res.json([]);
+        }
+    } else {
+        return res.json([]);
+    }
+  }
+
+  const students = await Student.find(query).populate('class', 'name');
   res.json(students);
 });
 

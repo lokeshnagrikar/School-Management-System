@@ -3,7 +3,8 @@ import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 import {
     FiHome, FiUsers, FiUserCheck, FiBookOpen, FiBell, FiImage,
-    FiMessageSquare, FiSettings, FiLogOut, FiCheckSquare, FiBarChart2, FiFileText
+    FiMessageSquare, FiSettings, FiLogOut, FiCheckSquare, FiBarChart2, FiFileText,
+    FiDollarSign, FiTruck, FiLayers
 } from 'react-icons/fi';
 
 const Sidebar = () => {
@@ -65,6 +66,10 @@ const Sidebar = () => {
                             <NavItem to="/dashboard/staff" icon={FiUserCheck} label="Staff" />
                             <NavItem to="/dashboard/academics" icon={FiBookOpen} label="Academics" />
                             <NavItem to="/dashboard/gallery" icon={FiImage} label="Gallery" />
+                            <NavItem to="/dashboard/fees" icon={FiDollarSign} label="Fees" />
+                            <NavItem to="/dashboard/fee-structures" icon={FiLayers} label="Fee Structures" />
+                            <NavItem to="/dashboard/library" icon={FiBookOpen} label="Library" />
+                            <NavItem to="/dashboard/transport" icon={FiTruck} label="Transport" />
 
                             <div className="px-4 mt-6 mb-2">
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">System</p>
@@ -79,6 +84,7 @@ const Sidebar = () => {
                             <div className="px-4 mt-6 mb-2">
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Academic</p>
                             </div>
+                            <NavItem to="/dashboard/students" icon={FiUsers} label="Students" />
                             <NavItem to="/dashboard/assignments" icon={FiFileText} label="Assignments" />
                             <NavItem to="/dashboard/attendance" icon={FiCheckSquare} label="Attendance" />
                             <NavItem to="/dashboard/marks" icon={FiBarChart2} label="Marks" />
@@ -92,6 +98,7 @@ const Sidebar = () => {
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Learning</p>
                             </div>
                             <NavItem to="/dashboard/my-assignments" icon={FiFileText} label="My Assignments" />
+                            <NavItem to="/dashboard/my-fees" icon={FiDollarSign} label="My Fees" />
                             <NavItem to="/dashboard/notices" icon={FiBell} label="Notices" />
                         </>
                     )}

@@ -19,12 +19,21 @@ const Notices = () => {
         category: 'General'
     });
 
-    const categories = ['General', 'Academic', 'Sports', 'Events', 'Holiday'];
+    // Dynamic Categories
+    const [categories, setCategories] = useState(['General', 'Academic', 'Sports', 'Events', 'Holiday']);
+    const [isCustomCategory, setIsCustomCategory] = useState(false);
 
     const fetchNotices = async () => {
         try {
             const { data } = await api.get('/cms/notices');
             setNotices(data);
+
+            // Extract unique categories from fetched notices to make dropdown dynamic
+            const existingCategories = [...new Set(data.map(n => n.category || 'General'))];
+            // Merge with default recommendations
+            const unique = [...new Set([...categories, ...existingCategories])];
+            setCategories(unique);
+
             setLoading(false);
         } catch (error) {
             console.error("Error", error);
@@ -106,7 +115,7 @@ const Notices = () => {
                             <div className="p-6 flex-1 flex flex-col">
                                 <div className="flex items-center gap-2 mb-4">
                                     <span className="bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                                        <FiTag className="text-[10px]" /> {formData.category || 'General'}
+                                        <FiTag className="text-[10px]" /> {notice.category || 'General'}
                                     </span>
                                     <span className="text-gray-400 text-xs flex items-center gap-1">
                                         <FiCalendar /> {new Date(notice.date).toLocaleDateString()}
@@ -170,9 +179,43 @@ const Notices = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Category</label>
-                                        <select className="w-full border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })}>
-                                            {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                                        </select>
+                                        {!isCustomCategory ? (
+                                            <div className="flex gap-2">
+                                                <select
+                                                    className="w-full border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none"
+                                                    value={formData.category}
+                                                    onChange={e => {
+                                                        if (e.target.value === 'custom_plus_option') {
+                                                            setIsCustomCategory(true);
+                                                            setFormData({ ...formData, category: '' });
+                                                        } else {
+                                                            setFormData({ ...formData, category: e.target.value });
+                                                        }
+                                                    }}
+                                                >
+                                                    {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                                                    <option value="custom_plus_option">+ Create New Category</option>
+                                                </select>
+                                            </div>
+                                        ) : (
+                                            <div className="flex gap-2">
+                                                <input
+                                                    type="text"
+                                                    autoFocus
+                                                    placeholder="Type new category..."
+                                                    className="w-full border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 outline-none"
+                                                    value={formData.category}
+                                                    onChange={e => setFormData({ ...formData, category: e.target.value })}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setIsCustomCategory(false)}
+                                                    className="text-xs text-blue-500 hover:underline"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                     <div>
                                         <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Date</label>

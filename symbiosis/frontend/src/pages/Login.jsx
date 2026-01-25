@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/AuthContext";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { FiMail, FiLock, FiArrowRight } from "react-icons/fi";
+import { FiMail, FiLock, FiArrowRight, FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
 
@@ -9,6 +9,7 @@ const Login = () => {
     const { login, loginWithGoogle, user } = useContext(AuthContext); // Get user to redirect if already logged in
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -133,13 +134,20 @@ const Login = () => {
                                 <FiLock className="text-blue-300" />
                             </div>
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="block w-full pl-10 pr-3 py-3 bg-white/5 border border-blue-400/30 rounded-xl text-white placeholder-blue-300/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                className="block w-full pl-10 pr-10 py-3 bg-white/5 border border-blue-400/30 rounded-xl text-white placeholder-blue-300/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                 placeholder="••••••••"
                                 required
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-blue-300 hover:text-white transition-colors focus:outline-none"
+                            >
+                                {showPassword ? <FiEyeOff /> : <FiEye />}
+                            </button>
                         </div>
                     </div>
 

@@ -51,7 +51,7 @@ const getNotices = asyncHandler(async (req, res) => {
 // @route   POST /api/cms/notices
 // @access  Private/Admin/Teacher
 const createNotice = asyncHandler(async (req, res) => {
-    const { title, content, date, targetClass } = req.body;
+    const { title, content, date, targetClass, category } = req.body;
 
     const notice = await Notice.create({
         title,
@@ -59,7 +59,8 @@ const createNotice = asyncHandler(async (req, res) => {
         date,
         image: req.file ? req.file.path : null, // Assuming Cloudinary mw
         postedBy: req.user._id,
-        targetClass: targetClass || null
+        targetClass: targetClass || null,
+        category: category || 'General'
     });
 
     res.status(201).json(notice);

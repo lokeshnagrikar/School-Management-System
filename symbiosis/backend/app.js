@@ -47,6 +47,10 @@ app.use('/api/events', require('./routes/eventRoutes'));
 app.use('/api/newsletter', require('./routes/newsletterRoutes'));
 app.use('/api/search', require('./routes/searchRoutes'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
+app.use('/api/fees', require('./routes/feeRoutes'));
+app.use('/api/fee-structures', require('./routes/feeStructureRoutes'));
+app.use('/api/library', require('./routes/libraryRoutes'));
+app.use('/api/transport', require('./routes/transportRoutes'));
 
 // Static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

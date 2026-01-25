@@ -79,7 +79,7 @@ router
    *       200:
    *         description: Notice deleted
    */
-  .delete(protect, authorize('ADMIN'), deleteNotice);
+  .delete(protect, authorize('ADMIN', 'TEACHER'), deleteNotice);
 
 router
   .route('/gallery')

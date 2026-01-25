@@ -14,6 +14,10 @@ const noticeSchema = mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    category: {
+      type: String,
+      default: 'General'
+    },
     image: {
       type: String, // URL
     },

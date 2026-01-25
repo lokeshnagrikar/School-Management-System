@@ -19,6 +19,10 @@ import UploadMarks from './pages/admin/UploadMarks';
 import Academics from './pages/admin/Academics';
 import Notices from './pages/admin/Notices';
 import Gallery from './pages/admin/Gallery';
+import Fees from './pages/admin/Fees';
+import Library from './pages/admin/Library';
+import Transport from './pages/admin/Transport';
+import FeeStructures from './pages/admin/FeeStructures';
 
 import Enquiries from './pages/admin/Enquiries';
 import Profile from './pages/admin/Profile';
@@ -35,6 +39,7 @@ import StudentDashboard from './pages/student/StudentDashboard';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import TeacherAssignments from './pages/teacher/Assignments';
 import StudentAssignments from './pages/student/Assignments';
+import StudentFees from './pages/student/Fees';
 
 
 function App() {
@@ -77,10 +82,15 @@ function App() {
               <Route path="academics" element={<Academics />} />
               <Route path="settings" element={<Settings />} />
               <Route path="enquiries" element={<Enquiries />} />
+              <Route path="fees" element={<Fees />} />
+              <Route path="fee-structures" element={<FeeStructures />} />
+              <Route path="library" element={<Library />} />
+              <Route path="transport" element={<Transport />} />
             </Route>
 
             {/* Teacher Routes */}
             <Route element={<TeacherRoute />}>
+              <Route path="students" element={<StudentsList />} />
               <Route path="teacher" element={<TeacherDashboard />} />
               <Route path="assignments" element={<TeacherAssignments />} />
               <Route path="attendance" element={<MarkAttendance />} />
@@ -91,6 +101,7 @@ function App() {
             <Route element={<StudentRoute />}>
               <Route path="student" element={<StudentDashboard />} />
               <Route path="my-assignments" element={<StudentAssignments />} />
+              <Route path="my-fees" element={<StudentFees />} />
             </Route>
 
             {/* Common / Shared Routes (Internal RBAC needed or View Only) */}

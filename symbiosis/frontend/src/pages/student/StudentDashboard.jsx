@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiCheckCircle, FiClock, FiCalendar, FiBookOpen, FiActivity } from 'react-icons/fi';
+import { FiCheckCircle, FiClock, FiCalendar, FiBookOpen, FiActivity, FiDollarSign } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import api from '../../services/api';
 import { Link } from 'react-router-dom';
@@ -12,7 +12,11 @@ const StudentDashboard = ({ user }) => {
         const fetchDashboardData = async () => {
             try {
                 const { data } = await api.get('/students/dashboard');
-                setDashboardData(data);
+                // Fetch Fees
+                const { data: feeData } = await api.get('/fees');
+                const pendingFees = feeData.filter(f => f.status === 'Pending').reduce((acc, curr) => acc + curr.amount, 0);
+
+                setDashboardData({ ...data, pendingFees });
             } catch (error) {
                 console.error("Failed to fetch dashboard data", error);
             } finally {
@@ -40,7 +44,7 @@ const StudentDashboard = ({ user }) => {
         return <div className="p-8 text-center text-gray-500">Loading dashboard...</div>;
     }
 
-    const { attendancePercent, assignmentsPending, upcomingEvents, nextClass, recentNotices, classTeacher, schedule } = dashboardData || {};
+    const { attendancePercent, assignmentsPending, upcomingEvents, nextClass, recentNotices, classTeacher, schedule, pendingFees } = dashboardData || {};
 
     return (
         <motion.div
@@ -64,6 +68,7 @@ const StudentDashboard = ({ user }) => {
                     { label: 'Assignments', value: `${assignmentsPending} Pending`, icon: FiBookOpen, color: 'text-blue-500 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-900/30', border: 'border-blue-100 dark:border-blue-800/30' },
                     { label: 'Events', value: `${upcomingEvents} Upcoming`, icon: FiCalendar, color: 'text-purple-500 dark:text-purple-400', bg: 'bg-purple-50 dark:bg-purple-900/30', border: 'border-purple-100 dark:border-purple-800/30' },
                     { label: 'Next Class', value: nextClass, icon: FiClock, color: 'text-orange-500 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/30', border: 'border-orange-100 dark:border-orange-800/30' },
+                    { label: 'Fees Due', value: `₹${pendingFees || 0}`, icon: FiDollarSign, color: 'text-red-500 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-900/30', border: 'border-red-100 dark:border-red-800/30' },
                 ].map((stat, index) => (
                     <motion.div
                         key={index}
