@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiMenu, FiX, FiLogOut, FiLayout, FiUser, FiSettings, FiChevronDown, FiSearch, FiPlus, FiBell } from "react-icons/fi";
+import { FiMenu, FiX, FiLogOut, FiLayout, FiUser, FiSettings, FiChevronDown, FiSearch, FiPlus, FiBell, FiHome } from "react-icons/fi";
 import ThemeToggle from "./ThemeToggle";
 import AnimatedNavIcon from "./AnimatedNavIcon";
 import { navConfig } from "../config/navConfig";
@@ -363,7 +363,7 @@ const Navbar = () => {
 
                                                 {user.role === 'ADMIN' && (
                                                     <Link
-                                                        to="/dashboard/activity"
+                                                        to="/dashboard/profile"
                                                         onClick={() => setIsProfileOpen(false)}
                                                         className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg transition-colors"
                                                     >

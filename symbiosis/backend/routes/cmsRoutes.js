@@ -8,6 +8,8 @@ const {
   addGalleryItem,
   deleteGalleryItem,
   getDashboardStats,
+  getWebContents,
+  updateWebContent
 } = require('../controllers/cmsController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 
@@ -15,12 +17,14 @@ const { protect, authorize } = require('../middleware/authMiddleware');
  * @swagger
  * tags:
  *   name: CMS
- *   description: Content Management (Notices, Gallery)
+ *   description: Content Management (Notices, Gallery, Website)
  */
 
-
-
 router.get('/stats', protect, authorize('ADMIN'), getDashboardStats);
+
+// Website Content
+router.get('/content', getWebContents);
+router.put('/content/:section', protect, authorize('ADMIN'), updateWebContent);
 
 router
   .route('/notices')

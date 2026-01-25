@@ -4,7 +4,7 @@ import AuthContext from '../context/AuthContext';
 import {
     FiHome, FiUsers, FiUserCheck, FiBookOpen, FiBell, FiImage,
     FiMessageSquare, FiSettings, FiLogOut, FiCheckSquare, FiBarChart2, FiFileText,
-    FiDollarSign, FiTruck, FiLayers
+    FiDollarSign, FiTruck, FiLayers, FiMonitor
 } from 'react-icons/fi';
 
 const Sidebar = () => {
@@ -12,12 +12,6 @@ const Sidebar = () => {
     <div className="px-4 mt-6 mb-2">
         <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Account</p>
     </div>
-    const isActive = (path) => {
-        return location.pathname === path
-            ? 'bg-indigo-600 text-white shadow-md shadow-indigo-900/20'
-            : 'text-gray-400 hover:bg-slate-800 hover:text-white transition-colors';
-    };
-
     const NavItem = ({ to, icon: Icon, label, external }) => {
         if (external) {
             return (
@@ -28,10 +22,13 @@ const Sidebar = () => {
             );
         }
         return (
-            <Link to={to} className={`${isActive(to)} flex items-center px-4 py-3 mx-2 my-1 text-sm font-medium rounded-xl transition-all duration-200`}>
+            <RouterNavLink
+                to={to}
+                className={({ isActive }) => `flex items-center px-4 py-3 mx-2 my-1 text-sm font-medium rounded-xl transition-all duration-200 ${isActive ? 'bg-indigo-600 text-white shadow-md shadow-indigo-900/20' : 'text-gray-400 hover:bg-slate-800 hover:text-white transition-colors'}`}
+            >
                 <Icon className="mr-3 text-lg" />
                 {label}
-            </Link>
+            </RouterNavLink>
         );
     };
 
@@ -64,6 +61,7 @@ const Sidebar = () => {
                             </div>
                             <NavItem to="/dashboard/students" icon={FiUsers} label="Students" />
                             <NavItem to="/dashboard/staff" icon={FiUserCheck} label="Staff" />
+                            <NavItem to="/dashboard/exams" icon={FiFileText} label="Exams" />
                             <NavItem to="/dashboard/academics" icon={FiBookOpen} label="Academics" />
                             <NavItem to="/dashboard/gallery" icon={FiImage} label="Gallery" />
                             <NavItem to="/dashboard/fees" icon={FiDollarSign} label="Fees" />
@@ -74,6 +72,7 @@ const Sidebar = () => {
                             <div className="px-4 mt-6 mb-2">
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">System</p>
                             </div>
+                            <NavItem to="/dashboard/content" icon={FiMonitor} label="Website Content" />
                             <NavItem to="/dashboard/notices" icon={FiBell} label="Notices" />
                             <NavItem to="/dashboard/enquiries" icon={FiMessageSquare} label="Enquiries" />
                         </>
@@ -98,6 +97,7 @@ const Sidebar = () => {
                                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Learning</p>
                             </div>
                             <NavItem to="/dashboard/my-assignments" icon={FiFileText} label="My Assignments" />
+                            <NavItem to="/dashboard/my-results" icon={FiBarChart2} label="My Results" />
                             <NavItem to="/dashboard/my-fees" icon={FiDollarSign} label="My Fees" />
                             <NavItem to="/dashboard/notices" icon={FiBell} label="Notices" />
                         </>

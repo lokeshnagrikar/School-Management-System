@@ -81,7 +81,7 @@ Access the app at `http://localhost:5173`.
 
 | Role      | Email                   | Password      |
 | :-------- | :---------------------- | :------------ |
-| **Admin** | `admin@school.com`      | `adminpassword` |
+| **Admin** | `admin@isbm.com`        | `adminpassword` |
 | **Teacher**| `teacher1@school.com`  | `password123` |
 | **Student**| `student1@school.com`  | `password123` |
 

@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Notice = require('../models/Notice');
 const Gallery = require('../models/Gallery');
+const Content = require('../models/Content');
 
 // Notices
 const Enquiry = require('../models/Enquiry');
@@ -120,6 +121,44 @@ const getDashboardStats = asyncHandler(async (req, res) => {
     });
 });
 
+// @desc    Get website content (Public)
+// @route   GET /api/cms/content
+// @access  Public
+const getWebContents = asyncHandler(async (req, res) => {
+    const contents = await Content.find({});
+    // Convert array to object key-value for easy frontend access?
+    // Or just return array. Let's return array for now.
+    res.json(contents);
+});
+
+// @desc    Update/Create website content (Admin)
+// @route   PUT /api/cms/content/:section
+// @access  Admin
+const updateWebContent = asyncHandler(async (req, res) => {
+    const { section } = req.params;
+    const { title, subtitle, body, imageUrl } = req.body;
+
+    let content = await Content.findOne({ section });
+
+    if (content) {
+        content.title = title || content.title;
+        content.subtitle = subtitle || content.subtitle;
+        content.body = body || content.body;
+        content.imageUrl = imageUrl || content.imageUrl;
+        await content.save();
+    } else {
+        content = await Content.create({
+            section,
+            title,
+            subtitle,
+            body,
+            imageUrl
+        });
+    }
+
+    res.json(content);
+});
+
 module.exports = {
   getNotices,
   createNotice,
@@ -128,4 +167,6 @@ module.exports = {
   addGalleryItem,
   deleteGalleryItem,
   getDashboardStats,
+  getWebContents,
+  updateWebContent
 };

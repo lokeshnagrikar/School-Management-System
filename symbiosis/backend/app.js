@@ -51,6 +51,7 @@ app.use('/api/fees', require('./routes/feeRoutes'));
 app.use('/api/fee-structures', require('./routes/feeStructureRoutes'));
 app.use('/api/library', require('./routes/libraryRoutes'));
 app.use('/api/transport', require('./routes/transportRoutes'));
+app.use('/api/exams', require('./routes/examRoutes'));
 
 // Static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

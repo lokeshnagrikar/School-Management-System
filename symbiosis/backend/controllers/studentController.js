@@ -24,10 +24,19 @@ const getAllStudents = asyncHandler(async (req, res) => {
         const classTeacherClasses = await Class.find({ classTeacher: staffProfile._id });
         const classTeacherClassIds = classTeacherClasses.map(c => c._id);
 
-        const allClassIds = [...new Set([...assignedClassIds, ...classTeacherClassIds])];
+        const allClassIds = [...new Set([...assignedClassIds, ...classTeacherClassIds])].map(id => id.toString());
 
         if (allClassIds.length > 0) {
-            query.class = { $in: allClassIds };
+             // If query has class, verify it's allowed
+             if (req.query.class) {
+                if (allClassIds.includes(req.query.class)) {
+                    query.class = req.query.class;
+                } else {
+                    return res.json([]); // Unauthorized for this class
+                }
+             } else {
+                query.class = { $in: allClassIds };
+             }
         } else {
             // Teacher has no classes, return empty
              return res.json([]);
@@ -35,6 +44,9 @@ const getAllStudents = asyncHandler(async (req, res) => {
     } else {
         return res.json([]);
     }
+  } else if (req.user.role === 'ADMIN' && req.query.class) {
+      // Allow Admin to filter by class
+      query.class = req.query.class;
   }
 
   const students = await Student.find(query).populate('class', 'name');

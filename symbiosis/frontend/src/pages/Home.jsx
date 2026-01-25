@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -7,15 +8,37 @@ import {
     FiAward,
     FiUsers,
 } from "react-icons/fi";
+import api from '../services/api';
 
 const Home = () => {
+    const [content, setContent] = useState({});
+
+    useEffect(() => {
+        const fetchContent = async () => {
+            try {
+                const { data } = await api.get('/cms/content');
+                const map = {};
+                if (Array.isArray(data)) {
+                    data.forEach(c => map[c.section] = c);
+                }
+                setContent(map);
+            } catch (error) {
+                console.error("Failed to load CMS content", error);
+            }
+        };
+        fetchContent();
+    }, []);
+
+    const hero = content['home-hero'] || {};
+    // const about = content['home-about'] || {}; // Can be used for About section if needed
+
     return (
         <div className="font-sans bg-white dark:bg-slate-950 transition-colors duration-300">
             {/* Hero Section */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
                 {/* Background Image */}
                 <img
-                    src="https://images.unsplash.com/photo-1599725427295-6ed79ff8dbef?w=1600&auto=format&fit=crop&q=80"
+                    src={hero.imageUrl || "https://images.unsplash.com/photo-1599725427295-6ed79ff8dbef?w=1600&auto=format&fit=crop&q=80"}
                     alt="School Campus"
                     className="absolute inset-0 w-full h-full object-cover scale-105"
                 />
@@ -62,15 +85,38 @@ const Home = () => {
                         </span>
 
                         <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight mb-6 font-serif">
-                            Empowering <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-pink-400">
-                                Future Leaders
-                            </span>
+                            {hero.title || (
+                                <>
+                                    Empowering <br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-pink-400">
+                                        Future Leaders
+                                    </span>
+                                </>
+                            )}
+                            {/* Use title from CMS if exists, else default JSX structure */}
                         </h1>
+                        {!hero.title && !hero.subtitle && (
+                            /* If using CMS title, we might lose the formatting (br/span). 
+                               For simplicity, if CMS content exists, render it plain string. 
+                               OR: keep the default if no content. 
+                               But if content exists, use it. */
+                            null
+                        )}
+
+                        {hero.title && (
+                            /* Ensure custom title doesn't break layout. */
+                            /* Re-rendering title to be safe for updates */
+                            /* Wait, above logic is slightly complex. 
+                               Let's simplify: 
+                               If content found, use content.title.
+                               If NOT, use hardcoded. 
+                            */
+                            null
+                        )}
+
 
                         <p className="text-xl text-gray-200 mb-10 leading-relaxed max-w-2xl">
-                            We provide world-class education that nurtures academic excellence,
-                            creativity, leadership, and character in a future-ready environment.
+                            {hero.body || hero.subtitle || "We provide world-class education that nurtures academic excellence, creativity, leadership, and character in a future-ready environment."}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4">

@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 
 const attendanceSchema = mongoose.Schema(
   {
-    student: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Student',
+    date: {
+      type: Date,
       required: true,
     },
     class: {
@@ -12,27 +11,36 @@ const attendanceSchema = mongoose.Schema(
       ref: 'Class',
       required: true,
     },
-    date: {
-      type: String, // YYYY-MM-DD format for easier querying
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ['Present', 'Absent', 'Late', 'Excused'],
-      default: 'Present',
-    },
     teacher: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Staff', // Recorded by which teacher
-    }
+      ref: 'User', // or Staff
+      required: true,
+    },
+    records: [
+      {
+        student: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Student',
+          required: true,
+        },
+        status: {
+          type: String,
+          enum: ['Present', 'Absent', 'Late', 'Excused'],
+          default: 'Present',
+        },
+        remarks: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-// Composite unique index: One attendance record per student per date
-attendanceSchema.index({ student: 1, date: 1 }, { unique: true });
+// Ensure one record per class per day
+attendanceSchema.index({ date: 1, class: 1 }, { unique: true });
 
 const Attendance = mongoose.model('Attendance', attendanceSchema);
 
