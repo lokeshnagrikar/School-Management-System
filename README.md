@@ -143,6 +143,12 @@ symbiosis/
 
 Contributions are welcome! Please fork the repository and submit a pull request.
 
+## Commercial License Notice
+This project is proprietary software.
+It is not open source and may not be redistributed or resold without permission.
+For commercial licensing, contact the author.
+
+
 ---
 
 ## 📜 License
